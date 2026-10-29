@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#003366">
+    <title>Starlink Bundles | Instant Data into Your Wallet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --blue: #003366; --blue-light: #0056b3; --red: #e30613; --green: #00a651;
+            --white: #ffffff; --gray-light: #f8fafc; --gray-border: #e2e8f0;
+            --text-dark: #1e293b; --text-muted: #64748b;
+            --shadow: 0 10px 25px -5px rgba(0, 51, 102, 0.1), 0 8px 10px -6px rgba(0, 51, 102, 0.1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--gray-light); color: var(--text-dark); line-height: 1.5; overflow-x: hidden; }
+        header { background: var(--white); padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .logo { font-family: 'Poppins', sans-serif; font-size: 24px; font-weight: 900; text-decoration: none; }
+        .logo .eco { color: var(--blue); } .logo .cash { color: var(--red); }
+        .hero { padding: 4rem 5%; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1280px; margin: 0 auto; align-items: center; }
+        .hero-content h1 { font-family: 'Poppins', sans-serif; font-size: 3.5rem; font-weight: 800; line-height: 1.1; color: var(--blue); margin-bottom: 1.5rem; }
+        .hero-content p { font-size: 1.125rem; color: var(--text-muted); margin-bottom: 2rem; max-width: 480px; }
+        .trust-badges { display: flex; gap: 2rem; margin-top: 3rem; }
+        .trust-item { display: flex; align-items: center; gap: 0.75rem; font-size: 0.875rem; font-weight: 600; color: var(--text-dark); }
+        .trust-item i { color: var(--green); font-size: 1.25rem; }
+        .calc-card { background: var(--white); border-radius: 24px; padding: 2.5rem; box-shadow: var(--shadow); border: 1px solid var(--gray-border); }
+        .calc-title { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; text-align: center; }
+        .calc-subtitle { font-size: 0.875rem; color: var(--text-muted); text-align: center; margin-bottom: 2rem; }
+        .input-group { margin-bottom: 1.5rem; }
+        .label-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+        .label-row label { font-weight: 700; font-size: 0.875rem; color: var(--text-dark); }
+        .value-display { font-weight: 800; font-size: 1.25rem; color: var(--blue); }
+        .bundle-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
+        .bundle-chip { border: 2px solid var(--gray-border); border-radius: 14px; padding: 0.9rem 0.75rem; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--white); }
+        .bundle-chip:hover { border-color: var(--blue-light); }
+        .bundle-chip.active { border-color: var(--blue); background: rgba(0, 51, 102, 0.04); box-shadow: 0 0 0 3px rgba(0,51,102,0.08); }
+        .bc-gb { font-size: 1.1rem; font-weight: 800; color: var(--blue); line-height: 1.1; }
+        .bc-desc { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; font-weight: 600; }
+        .bc-price { font-size: 0.85rem; font-weight: 700; color: var(--text-dark); margin-top: 0.4rem; }
+        .phone-field { background: var(--gray-light); border: 2px solid var(--gray-border); border-radius: 12px; padding: 0.75rem 1rem; display: flex; align-items: center; margin-bottom: 2rem; transition: border-color 0.2s; }
+        .phone-field:focus-within { border-color: var(--blue); }
+        .phone-prefix { font-weight: 700; color: var(--blue); margin-right: 0.75rem; border-right: 2px solid var(--gray-border); padding-right: 0.75rem; }
+        .phone-input { flex: 1; border: none; background: transparent; font-size: 1rem; font-weight: 700; outline: none; font-family: inherit; }
+        .result-box { background: var(--blue); color: var(--white); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+        .result-label { font-size: 0.875rem; font-weight: 600; opacity: 0.9; }
+        .result-value { font-size: 1.75rem; font-weight: 800; }
+        .apply-btn { width: 100%; background: var(--red); color: var(--white); border: none; padding: 1.25rem; border-radius: 12px; font-size: 1.125rem; font-weight: 800; cursor: pointer; transition: transform 0.2s, background 0.2s; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 14px rgba(227, 6, 19, 0.3); }
+        .apply-btn:hover { background: #c20510; transform: translateY(-2px); }
+        .apply-btn:active { transform: translateY(0); }
+        .benefits { background: var(--white); padding: 5rem 5%; }
+        .section-title { text-align: center; font-family: 'Poppins', sans-serif; font-size: 2.25rem; font-weight: 800; margin-bottom: 4rem; color: var(--blue); }
+        .benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; max-width: 1200px; margin: 0 auto; }
+        .benefit-card { text-align: center; padding: 2rem; }
+        .benefit-icon { width: 80px; height: 80px; background: var(--gray-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem; color: var(--blue); }
+        .benefit-card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; }
+        .benefit-card p { font-size: 0.875rem; color: var(--text-muted); line-height: 1.6; }
+        @media (max-width: 1024px) {
+            .hero { grid-template-columns: 1fr; gap: 3rem; text-align: center; }
+            .hero-content h1 { font-size: 2.75rem; }
+            .hero-content p { margin: 0 auto 2rem; }
+            .trust-badges { justify-content: center; }
+            .calc-card { max-width: 500px; margin: 0 auto; }
+        }
+        @media (max-width: 768px) { .benefits-grid { grid-template-columns: 1fr; } .hero-content h1 { font-size: 2.25rem; } }
+        @media (max-width: 480px) {
+            header { padding: 0.85rem 5%; } .logo { font-size: 20px; }
+            .hero { padding: 2rem 5%; gap: 2rem; }
+            .hero-content h1 { font-size: 1.85rem; margin-bottom: 1rem; }
+            .hero-content p { font-size: 1rem; margin-bottom: 1.5rem; }
+            .trust-badges { flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; }
+            .trust-item { font-size: 0.8rem; }
+            .calc-card { padding: 1.5rem; border-radius: 18px; max-width: 100%; }
+            .calc-title { font-size: 1.25rem; } .calc-subtitle { margin-bottom: 1.5rem; }
+            .value-display { font-size: 1.1rem; } .result-value { font-size: 1.4rem; } .result-box { padding: 1.25rem; }
+            .apply-btn { padding: 1rem; font-size: 1rem; }
+            .benefits { padding: 3rem 5%; } .section-title { font-size: 1.6rem; margin-bottom: 2.5rem; } .benefit-card { padding: 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+    <header><a href="#" class="logo"><span class="eco">Star</span><span class="cash">Link</span></a></header>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Buy Starlink Bundles <br>In Seconds</h1>
+            <p>The fastest way to top up your Starlink data in Zimbabwe. Choose a bundle, pay with EcoCash, and get connected instantly.</p>
+            <div class="trust-badges">
+                <div class="trust-item"><i class="fa-solid fa-circle-check"></i> 100% Secure</div>
+                <div class="trust-item"><i class="fa-solid fa-circle-check"></i> Instant Delivery</div>
+                <div class="trust-item"><i class="fa-solid fa-circle-check"></i> No Hidden Fees</div>
+            </div>
+        </div>
+        <div class="hero-calc">
+            <div class="calc-card">
+                <h2 class="calc-title">Starlink Data Plans</h2>
+                <p class="calc-subtitle">Powered by ECONET Wireless</p>
+                <div class="input-group">
+                    <div class="label-row"><label>Choose Plan</label><span class="value-display" id="bundle-val">50 GB</span></div>
+                    <div class="bundle-grid" id="bundleGrid">
+                        <div class="bundle-chip" data-gb="5" data-price="0.00"><div class="bc-gb">5 GB</div><div class="bc-desc">Free Trial</div><div class="bc-price">$0.00</div></div>
+                        <div class="bundle-chip" data-gb="15" data-price="0.99"><div class="bc-gb">15 GB</div><div class="bc-desc">7-Day</div><div class="bc-price">$0.99</div></div>
+                        <div class="bundle-chip" data-gb="35" data-price="1.99"><div class="bc-gb">35 GB</div><div class="bc-desc">14-Day</div><div class="bc-price">$1.99</div></div>
+                        <div class="bundle-chip active" data-gb="50" data-price="2.99"><div class="bc-gb">50 GB</div><div class="bc-desc">21-Day</div><div class="bc-price">$2.99</div></div>
+                        <div class="bundle-chip" data-gb="Unlimited" data-price="3.99"><div class="bc-gb">Unlimited</div><div class="bc-desc">30-Day</div><div class="bc-price">$3.99</div></div>
+                        <div class="bundle-chip" data-gb="Unlimited 5G" data-price="7.99"><div class="bc-gb">Unlimited</div><div class="bc-desc">5G / 30-Day</div><div class="bc-price">$7.99</div></div>
+                    </div>
+                </div>
+                <div class="label-row" style="margin-top: 1rem;"><label>EcoCash Number</label></div>
+                <div class="phone-field">
+                    <span class="phone-prefix">+263</span>
+                    <input type="tel" id="phone-input" class="phone-input" placeholder="7XXXXXXXX" maxlength="9">
+                </div>
+                <div class="result-box">
+                    <span class="result-label">Total to Pay</span>
+                    <span class="result-value" id="total-val">$2.99</span>
+                </div>
+                <button class="apply-btn" id="apply-btn">Pay via EcoCash</button>
+            </div>
+        </div>
+    </section>
+    <section class="benefits">
+        <h2 class="section-title">Why Buy Starlink Bundles Here?</h2>
+        <div class="benefits-grid">
+            <div class="benefit-card"><div class="benefit-icon"><i class="fa-solid fa-bolt-lightning"></i></div><h3>Instant Delivery</h3><p>Your bundle is activated on your Starlink account within seconds of payment.</p></div>
+            <div class="benefit-card"><div class="benefit-icon"><i class="fa-solid fa-shield-halved"></i></div><h3>Bank-Level Security</h3><p>Your data and transactions are protected with the highest security standards.</p></div>
+            <div class="benefit-card"><div class="benefit-icon"><i class="fa-solid fa-mobile-screen-button"></i></div><h3>100% Digital</h3><p>Buy from anywhere, anytime. No agents, no queues, no paperwork.</p></div>
+        </div>
+    </section>
+    <script>
+        const phoneInput = document.getElementById('phone-input');
+        const bundleVal = document.getElementById('bundle-val');
+        const totalVal = document.getElementById('total-val');
+        const applyBtn = document.getElementById('apply-btn');
+        const chips = document.querySelectorAll('.bundle-chip');
+        
+        // Default to 50GB / $2.99 based on screenshot
+        var selected = { gb: "50", price: 2.99 };
+
+        chips.forEach(function(chip) {
+            chip.addEventListener('click', function() {
+                chips.forEach(function(c) { c.classList.remove('active'); });
+                chip.classList.add('active');
+                
+                // Extract data
+                const dataGb = chip.dataset.gb;
+                selected.gb = dataGb;
+                selected.price = parseFloat(chip.dataset.price);
+                
+                // Update UI
+                bundleVal.textContent = dataGb + (dataGb.includes('Unlimited') ? '' : ' GB');
+                totalVal.textContent = '$' + selected.price.toFixed(2);
+            });
+        });
+
+        phoneInput.addEventListener('input', function() {
+            let v = this.value.replace(/\D/g, '');
+            if (v.length > 0 && v[0] !== '7') { v = ''; }
+            this.value = v.substring(0, 9);
+        });
+
+        applyBtn.addEventListener('click', function() {
+            const phone = phoneInput.value;
+            if (phone.length !== 9) { 
+                alert('Please enter a valid 9-digit EcoCash number starting with 7'); 
+                phoneInput.focus(); 
+                return; 
+            }
+            
+            this.disabled = true;
+            this.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
+            
+            const term = selected.gb + ' Starlink Plan';
+            const total = selected.price.toFixed(2);
+            
+            setTimeout(() => { 
+                window.location.href = `apply.html?phone=${phone}&data=${encodeURIComponent(term)}&price=${total}`; 
+            }, 1200);
+        });
+    </script>
+</body>
+  </html>
